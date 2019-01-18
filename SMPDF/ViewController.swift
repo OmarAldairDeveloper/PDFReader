@@ -9,8 +9,9 @@
 import UIKit
 import PDFKit
 import MobileCoreServices
+import SafariServices
 
-class ViewController: UIViewController, UIDropInteractionDelegate {
+class ViewController: UIViewController, UIDropInteractionDelegate, PDFViewDelegate {
     
     let pdfView = PDFView()
 
@@ -31,6 +32,11 @@ class ViewController: UIViewController, UIDropInteractionDelegate {
         // Agregar interacción de drop a la PDFView
         let dropInteraction = UIDropInteraction(delegate: self)
         pdfView.addInteraction(dropInteraction)
+        
+        // Agregar PDFViewDelegate
+        self.pdfView.delegate = self
+        
+        
         
         
         let search = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchText))
@@ -69,7 +75,14 @@ class ViewController: UIViewController, UIDropInteractionDelegate {
         }
     }
     
-    // Manage PDF
+    // MARK: PDFViewDelegate
+    func pdfViewWillClick(onLink sender: PDFView, with url: URL) {
+        let safariController = SFSafariViewController(url: url)
+        safariController.modalPresentationStyle = .formSheet
+        present(safariController, animated: true)
+    }
+    
+    // MARK: Manage PDF
     func openPDF(data: Data){
         
         if let document = PDFDocument(data: data){
