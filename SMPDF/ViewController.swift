@@ -34,8 +34,9 @@ class ViewController: UIViewController, UIDropInteractionDelegate {
         
         
         let search = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchText))
+        let action = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareSelection(sender:)))
         
-        self.navigationItem.leftBarButtonItems = [search]
+        self.navigationItem.leftBarButtonItems = [search, action]
         
         
     }
@@ -89,12 +90,33 @@ class ViewController: UIViewController, UIDropInteractionDelegate {
             guard let text = alert.textFields?.first?.text else { return }
             guard let match = self.pdfView.document?.findString(text, fromSelection: self.pdfView.highlightedSelections?.first, withOptions: .caseInsensitive) else { return }
             
+            match.color = UIColor.red
             self.pdfView.go(to: match)
-            
             self.pdfView.highlightedSelections = [match]
             
         }))
+        
+        alert.addAction(UIAlertAction(title: "Cancelar", style: .cancel, handler: nil))
+        
+        present(alert, animated: true)
     }
+    
+    
+    @objc func shareSelection(sender: UIBarButtonItem){
+        
+        guard let selection = self.pdfView.currentSelection?.attributedString else{
+            let alert = UIAlertController(title: "No hay nada seleccionado", message: "Selecciona una parte del PDF", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            present(alert, animated: true)
+            return
+        }
+        
+        let sharedVC = UIActivityViewController(activityItems: [selection], applicationActivities: nil)
+        sharedVC.popoverPresentationController?.barButtonItem = sender
+        present(sharedVC, animated: true)
+    }
+    
+    
     
     
 
