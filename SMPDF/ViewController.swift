@@ -35,8 +35,10 @@ class ViewController: UIViewController, UIDropInteractionDelegate {
         
         let search = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchText))
         let action = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareSelection(sender:)))
+        let next = UIBarButtonItem(barButtonSystemItem: .fastForward, target: self.pdfView, action: #selector(PDFView.goToNextPage(_:)))
+        let previous = UIBarButtonItem(barButtonSystemItem: .rewind, target: self.pdfView, action: #selector(PDFView.goToPreviousPage(_:)))
         
-        self.navigationItem.leftBarButtonItems = [search, action]
+        self.navigationItem.leftBarButtonItems = [search, action, previous, next]
         
         
     }
