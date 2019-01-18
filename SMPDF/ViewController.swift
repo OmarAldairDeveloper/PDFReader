@@ -33,6 +33,11 @@ class ViewController: UIViewController, UIDropInteractionDelegate {
         pdfView.addInteraction(dropInteraction)
         
         
+        let search = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchText))
+        
+        self.navigationItem.leftBarButtonItems = [search]
+        
+        
     }
     
     
@@ -52,11 +57,8 @@ class ViewController: UIViewController, UIDropInteractionDelegate {
                 if let data = pdfDoc.data{
                     self.openPDF(data: data)
                 }
-                
-                
-                
+
             }
-            
             print("SI es PDF")
         }else{
             
@@ -64,16 +66,37 @@ class ViewController: UIViewController, UIDropInteractionDelegate {
         }
     }
     
-    
+    // Manage PDF
     func openPDF(data: Data){
         
         if let document = PDFDocument(data: data){
-            
             self.pdfView.document = document
             self.pdfView.goToFirstPage(nil)
         }
         
     }
+    
+    @objc func searchText(){
+        
+        let alert = UIAlertController(title: "Buscar texto", message: "", preferredStyle: .alert)
+        
+        alert.addTextField { (txtField) in
+            txtField.placeholder = "Escribe las palabras clave que deseas buscar"
+        }
+        
+        alert.addAction(UIAlertAction(title: "Buscar", style: .default, handler: { (action) in
+            
+            guard let text = alert.textFields?.first?.text else { return }
+            guard let match = self.pdfView.document?.findString(text, fromSelection: self.pdfView.highlightedSelections?.first, withOptions: .caseInsensitive) else { return }
+            
+            self.pdfView.go(to: match)
+            
+            self.pdfView.highlightedSelections = [match]
+            
+        }))
+    }
+    
+    
 
 
 }
