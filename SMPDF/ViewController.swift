@@ -14,6 +14,8 @@ import SafariServices
 class ViewController: UIViewController, UIDropInteractionDelegate, PDFViewDelegate {
     
     let pdfView = PDFView()
+    /*var currentIndex = 0
+    var textToFind = ""*/
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,23 +30,25 @@ class ViewController: UIViewController, UIDropInteractionDelegate, PDFViewDelega
         pdfView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         pdfView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         pdfView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        pdfView.autoScales = true
+        
         
         // Agregar interacción de drop a la PDFView
         let dropInteraction = UIDropInteraction(delegate: self)
         pdfView.addInteraction(dropInteraction)
         
+        
         // Agregar PDFViewDelegate
         self.pdfView.delegate = self
-        
-        
         
         
         let search = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchText))
         let action = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareSelection(sender:)))
         let next = UIBarButtonItem(barButtonSystemItem: .fastForward, target: self.pdfView, action: #selector(PDFView.goToNextPage(_:)))
         let previous = UIBarButtonItem(barButtonSystemItem: .rewind, target: self.pdfView, action: #selector(PDFView.goToPreviousPage(_:)))
-        
         self.navigationItem.leftBarButtonItems = [search, action, previous, next]
+        
+    
         
         
     }
@@ -101,20 +105,38 @@ class ViewController: UIViewController, UIDropInteractionDelegate, PDFViewDelega
         }
         
         alert.addAction(UIAlertAction(title: "Buscar", style: .default, handler: { (action) in
-            
             guard let text = alert.textFields?.first?.text else { return }
-            guard let match = self.pdfView.document?.findString(text, fromSelection: self.pdfView.highlightedSelections?.first, withOptions: .caseInsensitive) else { return }
+            /*guard let match = self.pdfView.document?.findString(text, fromSelection: self.pdfView.highlightedSelections?.first, withOptions: .caseInsensitive) else { return }*/
             
-            match.color = UIColor.red
+            guard let matches = self.pdfView.document?.findString(text, withOptions: .caseInsensitive) else { return }
+            
+            matches.forEach({ (match) in
+                match.pages.forEach({ (page) in
+                    let highlight = PDFAnnotation(bounds: match.bounds(for: page), forType: .highlight, withProperties: nil)
+                    highlight.endLineStyle = .circle
+                    highlight.color = UIColor.red
+                    
+                    page.addAnnotation(highlight)
+                })
+            })
+            
+            if let firstMatch = matches.first{
+                self.pdfView.go(to: firstMatch)
+            }
+            
+            /*match.color = UIColor.red
             self.pdfView.go(to: match)
-            self.pdfView.highlightedSelections = [match]
-            
+            self.pdfView.highlightedSelections = [match]*/
+
+   
         }))
         
         alert.addAction(UIAlertAction(title: "Cancelar", style: .cancel, handler: nil))
         
         present(alert, animated: true)
     }
+    
+    
     
     
     @objc func shareSelection(sender: UIBarButtonItem){
@@ -130,6 +152,8 @@ class ViewController: UIViewController, UIDropInteractionDelegate, PDFViewDelega
         sharedVC.popoverPresentationController?.barButtonItem = sender
         present(sharedVC, animated: true)
     }
+    
+    
     
     
     
