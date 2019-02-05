@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="DM0-A7-sNc">
-    <device id="retina4_7" orientation="portrait">
+    <device id="ipad9_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -15,16 +15,52 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="SMPDF" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="drag" translatesAutoresizingMaskIntoConstraints="NO" id="21J-lb-yup">
+                                <rect key="frame" x="304" y="432" width="160" height="160"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="160" id="qCK-iZ-ZEi"/>
+                                    <constraint firstAttribute="width" constant="160" id="tkS-K9-6En"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Arrastra un archivo PDF aquí" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="afS-cD-git">
+                                <rect key="frame" x="239" y="612" width="290" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="290" id="cBH-ai-EXe"/>
+                                    <constraint firstAttribute="height" constant="50" id="g2Z-bA-9fh"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="24"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="21J-lb-yup" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="AJJ-OD-Xtd"/>
+                            <constraint firstItem="afS-cD-git" firstAttribute="top" secondItem="21J-lb-yup" secondAttribute="bottom" constant="20" id="YaN-r0-3Wp"/>
+                            <constraint firstItem="afS-cD-git" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Zn0-tS-Ysa"/>
+                            <constraint firstItem="21J-lb-yup" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="eWA-7N-unP"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" title="PDF" id="wve-HI-Kn9"/>
+                    <navigationItem key="navigationItem" title="PDF" id="wve-HI-Kn9">
+                        <barButtonItem key="rightBarButtonItem" image="information" style="plain" id="rte-2O-xpZ">
+                            <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <connections>
+                                <action selector="infoButton:" destination="BYZ-38-t0r" id="dbI-aB-MhE"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="imageDrop" destination="21J-lb-yup" id="fID-TB-pfZ"/>
+                        <outlet property="labelDrop" destination="afS-cD-git" id="dfs-xH-N4S"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1000.8" y="101.19940029985008"/>
+            <point key="canvasLocation" x="1000.7194244604317" y="100.89928057553958"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="luL-Wv-DRw">
@@ -32,7 +68,7 @@
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="DM0-A7-sNc" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="M9g-40-O4r">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <rect key="frame" x="0.0" y="20" width="768" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
@@ -45,4 +81,8 @@
             <point key="canvasLocation" x="108" y="101"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="drag" width="409.60000610351562" height="409.60000610351562"/>
+        <image name="information" width="48" height="48"/>
+    </resources>
 </document>

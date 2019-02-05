@@ -16,6 +16,10 @@ class ViewController: UIViewController, UIDropInteractionDelegate, PDFViewDelega
     let pdfView = PDFView()
    
 
+    @IBOutlet weak var imageDrop: UIImageView!
+    @IBOutlet weak var labelDrop: UILabel!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
@@ -45,6 +49,10 @@ class ViewController: UIViewController, UIDropInteractionDelegate, PDFViewDelega
         let next = UIBarButtonItem(barButtonSystemItem: .fastForward, target: self.pdfView, action: #selector(PDFView.goToNextPage(_:)))
         let previous = UIBarButtonItem(barButtonSystemItem: .rewind, target: self.pdfView, action: #selector(PDFView.goToPreviousPage(_:)))
         self.navigationItem.leftBarButtonItems = [search, action, previous, next]
+       
+        
+        self.imageDrop.isHidden = false
+        self.labelDrop.isHidden = false
         
     
         
@@ -94,6 +102,8 @@ class ViewController: UIViewController, UIDropInteractionDelegate, PDFViewDelega
         // Crear el PDFDocument y asignarlo a la PDFView
         if let document = PDFDocument(data: data){
             self.pdfView.document = document
+            self.imageDrop.isHidden = true
+            self.labelDrop.isHidden = true
             self.pdfView.goToFirstPage(nil)
         }
         
@@ -156,6 +166,25 @@ class ViewController: UIViewController, UIDropInteractionDelegate, PDFViewDelega
         let sharedVC = UIActivityViewController(activityItems: [selection], applicationActivities: nil)
         sharedVC.popoverPresentationController?.barButtonItem = sender
         present(sharedVC, animated: true)
+    }
+    
+    
+    
+    
+    @IBAction func infoButton(_ sender: UIBarButtonItem) {
+        
+        let alert = UIAlertController(title: "Créditos", message:
+            """
+            Created by Omar Aldair Romero Pérez
+            Info Icon: Icon made by Good Ware from www.flaticon.com
+            App Icon: Icon made by Freepik [http://www.freepik.com/] from www.flaticon.com
+            Drop Icon: Icon made by Smashicons [https://smashicons.com/] from www.flaticon.com
+            """, preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        
+        present(alert, animated: true)
+        
     }
     
     
